@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>File share</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+    <h1>
+        Send and recv files
+    </h1>
+    <h3>
+        Upload a file :
+    </h3>
+    <form method="post" enctype=multipart/form-data>
+        <input type="file" name="file" id="file">
+        <input type="submit" name="upload" value="Send">
+    </form>
+    <p>
+        ---------------------------------------------------------------------
+    </p>
+    <h3>
+        Get files :
+    </h3>
+    <div>
+{FILES}
+    </div>
+</body>
+</html>
