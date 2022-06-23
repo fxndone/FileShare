@@ -27,9 +27,10 @@ def home():
         if 'file' not in request.files:
             return redirect(request.url)
         file = request.files['file']
+        print(file)
         if file.filename == '':
             return redirect(request.url)
-        if len(file.read()) > MAX_SIZE:
+        if file.content_length > MAX_SIZE:
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
@@ -37,25 +38,8 @@ def home():
                 filename = "_" + filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(request.url)
-        return f"""<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Wowowo !</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-</head>
-<body style="text-align: center;">
-    <h1>
-        Wow, bro !
-    </h1>
-    <p>
-        Bro, u just did something that isn't autorized !
-        Can u stop plzzz ???
-        Thanks, bro !
-    </p>
-</body>
-</html>"""
+        with open("error.html", 'r') as f:
+            return f.read()
     with open("main.html", 'r') as f:
         data = f.read()
     files = os.listdir("files/")
@@ -67,4 +51,13 @@ def home():
 def download_file(name):
     return send_from_directory(app.config['UPLOAD_FOLDER'], name)
 
-app.run(host='0.0.0.0', port=8080)
+try:
+    app.run(host='0.0.0.0', port=80)
+except:
+    print("""
+-----------------------------------
+    Can not run on port 80 !
+    Running on port 8080
+-----------------------------------
+""")
+    app.run(host='0.0.0.0', port=8080)
