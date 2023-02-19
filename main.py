@@ -44,12 +44,18 @@ def home():
         data = f.read()
     files = os.listdir("files/")
     files = srtd(files)
-    files = [f'        <a href="{request.url}files/FILE" download>FILE</a>'.replace("FILE", n) for n in files]
+    files = [f'        <p><a href="{request.url}files/{n}" download>{n}</a> <a href="{request.url}delet/{n}">delet</a></p>' for n in files]
     return data.replace("{FILES}", '<br>\n'.join(files))
 
 @app.route('/files/<name>')
 def download_file(name):
     return send_from_directory(app.config['UPLOAD_FOLDER'], name)
+
+@app.route('/delet/<name>')
+def remove_file(name):
+    if os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], name)):
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], name))
+    return redirect("/")
 
 try:
     app.run(host='0.0.0.0', port=80)
