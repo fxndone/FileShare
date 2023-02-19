@@ -27,7 +27,6 @@ def home():
         if 'file' not in request.files:
             return redirect(request.url)
         file = request.files['file']
-        print(file)
         if file.filename == '':
             return redirect(request.url)
         if file.content_length > MAX_SIZE:
