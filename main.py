@@ -9,6 +9,8 @@ UPLOAD_FOLDER = os.path.abspath("files/")
 ALLOWED_EXTENTIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'mp3'}
 MAX_SIZE = 100000
 
+ALLOWED_FILENAME_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-"
+
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -19,7 +21,7 @@ def srtd(files):
     return sorted(files, key=lambda v: cleared(v.lower()))
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENTIONS
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENTIONS and not any([x not in ALLOWED_FILENAME_CHARS] for x in filename)
 
 @app.route('/', methods=["GET", "POST"])
 def home():
